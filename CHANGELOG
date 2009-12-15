@@ -1,5 +1,14 @@
+0.1.1
+=====
+dadd875  Version bump 0.1.1
+1e5c38d  Add changelog generation task
+0386543  Updating schema
+40460d5  Use schema load in rake install
+522e62e  Start tracking schema.rb
+
 0.1.0
 =====
+87905c0  Updating changelog
 dae4172  Reordering of node view information, minor CSS tweak
 5475b16  Equal caption size to header
 b1cbc08  Increasing tick size in timeline graphs
