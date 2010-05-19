@@ -2,12 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe ApplicationHelper do
 
-  #Delete this example and add some real ones or delete this file
-  it "should be included in the object returned by #helper" do
-    included_modules = (class << helper; self; end).send :included_modules
-    included_modules.should include(ApplicationHelper)
-  end
-
   describe "#truncated_sentence" do
     describe "when there are less items than the max" do
       it "should return the items sentence" do

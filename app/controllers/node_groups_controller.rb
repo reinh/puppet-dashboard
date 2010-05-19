@@ -1,6 +1,8 @@
 class NodeGroupsController < InheritedResources::Base
   respond_to :html, :json
 
+  before_filter :require_user, :only => [:new, :edit, :update, :destroy, :create]
+
   private
 
   def collection

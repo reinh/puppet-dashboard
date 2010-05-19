@@ -3,6 +3,8 @@ class NodesController < InheritedResources::Base
   belongs_to :node_group, :optional => true
   respond_to :html, :yaml
 
+  before_filter :require_user, :only => [:new, :edit, :update, :destroy, :create]
+
   layout lambda {|c| c.request.xhr? ? false : 'application' }
 
   def index

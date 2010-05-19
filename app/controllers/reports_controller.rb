@@ -3,6 +3,7 @@ class ReportsController < InheritedResources::Base
   protect_from_forgery :except => :create
 
   before_filter :handle_raw_post, :only => :create
+  before_filter :require_user, :only => [:update, :destroy]
 
   private
 

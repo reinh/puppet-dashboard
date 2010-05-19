@@ -1,0 +1,4 @@
+development:
+  authenticate: true
+production:
+  authenticate: true
