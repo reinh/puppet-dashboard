@@ -38,33 +38,39 @@ jQuery(document).ready(function(J) {
   J("table.data.runtime").each(function(i){
     var id, label_data, runtime_data, runtime_data_label
     id = "table_runtime"+i
-    J("<div id='"+id+"' style='height:150px; width: *%'></div>").insertAfter(J(this));
 
     label_data = J(this).find("tr.labels th").mapHtml();
     runtime_data = J(this).find("tr.runtimes td").mapHtmlFloat();
 
-    new Grafico.LineGraph($(id),
-      {
-        runtimes: runtime_data
-      },
-      {
-        colors: { runtimes: "#009" },
-        font_size: 9,
-        grid: false,
-        label_color: '#666',
-        labels: label_data,
-        label_rotation: -30,
-        markers: "value",
-        meanline: true,
-        padding_top: 10,
-        left_padding: 50,
-        // show_horizontal_labels: false,
-        show_ticks: false,
-        start_at_zero: false,
-        stroke_width: 3,
-        vertical_label_unit: "ms",
-      }
-    );
+    if ( runtime_data.length ) {
+      J("<div id='"+id+"' style='height:150px; width: *%'></div>").insertAfter(J(this));
+
+      new Grafico.LineGraph($(id),
+        {
+          runtimes: runtime_data
+        },
+        {
+          colors: { runtimes: "#009" },
+          font_size: 9,
+          grid: false,
+          label_color: '#666',
+          labels: label_data,
+          label_rotation: -30,
+          markers: "value",
+          meanline: true,
+          padding_top: 10,
+          left_padding: 50,
+          // show_horizontal_labels: false,
+          show_ticks: false,
+          start_at_zero: false,
+          stroke_width: 3,
+          vertical_label_unit: "ms",
+        }
+      );
+    } else {
+      J(this).after('<p>No runtime data for this node</p>');
+    }
+
 
     J(this).hide();
   });
@@ -82,25 +88,29 @@ jQuery(document).ready(function(J) {
 
     succeeded_data_label = J.map(succeeded_data, function(item, index){return item+" successful"});
     failed_data_label = J.map(failed_data, function(item, index){return item+" failed"});
-    
-    new Grafico.StackedBarGraph($(id),
-      {
-        succeeded: succeeded_data,
-        failed: failed_data
-      },
-      {
-        colors: { succeeded: "#0C3", failed: "#901" },
-        datalabels: { succeeded: succeeded_data_label, failed: failed_data_label },
-        font_size: 9,
-        grid: false,
-        label_color: '#666',
-        label_rotation: -30,
-        labels: label_data,
-        padding_top: 10,
-        left_padding: 50,
-        show_ticks: false,
-      }
-    );
+
+    if ( succeeded_data.length && failed_data.length ) {
+      new Grafico.StackedBarGraph($(id),
+        {
+          succeeded: succeeded_data,
+          failed: failed_data
+        },
+        {
+          colors: { succeeded: "#0C3", failed: "#901" },
+          datalabels: { succeeded: succeeded_data_label, failed: failed_data_label },
+          font_size: 9,
+          grid: false,
+          label_color: '#666',
+          label_rotation: -30,
+          labels: label_data,
+          padding_top: 10,
+          left_padding: 50,
+          show_ticks: false,
+        }
+      );
+    } else {
+      J(this).after('<p>No runtime data for this node</p>');
+    }
 
     J(this).hide();
   });
