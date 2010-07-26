@@ -82,6 +82,11 @@ $rounding_radius: 0.35em;
     background: $header_background url('../images/icons/' + $icon_name + '.png') 5px center no-repeat;
     color: $header_foreground;
   }
+
+  p:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0.75em;
+  }
 }
 
 body {
@@ -162,6 +167,15 @@ body {
       margin: 0 2px;
       padding: 0 .25em;
       line-height: 1.75em;
+    }
+
+    h2 {
+        &.half {
+            width: 0%;
+            margin-right: 5%;
+            float: left;
+            white-space: nowrap;
+        }
     }
   }
 
@@ -315,7 +329,7 @@ body {
             border: 0; }
 
           &.active {
-            background: #e2edf5; }
+            background: #FFFF99; }
 
           a {
             padding: .25em .5em;
@@ -324,6 +338,10 @@ body {
 
           span.count {
             background: #DDD;
+
+            &.failure {
+                background: #DD9B9B;
+            }
           }
         }
       }
@@ -345,7 +363,7 @@ body {
   /* ACTIONBAR */
 
   .actionbar {
-    @include rounded;
+    @include rounded_bottom;
     background: #DDD;
     padding: 1px;
 
@@ -364,7 +382,8 @@ body {
     .pagination {
       font-size: 12px;
       padding: .1em .5em;
-      float: right;
+      float: left;
+      padding-left: 0.5em;
     }
 
     .dropdown {
@@ -397,6 +416,11 @@ body {
     padding: 1em;
     margin-bottom: 1em;
     overflow: hidden;
+
+    &:last-child {
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
   }
 
   .half {

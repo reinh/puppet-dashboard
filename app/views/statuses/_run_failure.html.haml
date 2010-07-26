@@ -1,7 +1,7 @@
-%h3 Daily Run Status
-%p.legend Number and status of runs each day for the last 30 days.
+%h3 Daily run status
+%p.legend Number and status of runs during the last #{Status::INTERVAL_CUTOFF/1.day} days.
 
-- statuses = Status.by_interval(:limit => 30) unless statuses
+- statuses = Status.by_interval(:limit => Status::INTERVAL_CUTOFF) unless statuses
 - if statuses.present?
   %table.inspector.data.status.bar
     %thead
@@ -17,4 +17,3 @@
           %td= status.failed
 - else
   %p No runs to report
--# .clear &nbsp;

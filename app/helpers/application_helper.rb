@@ -100,12 +100,12 @@ module ApplicationHelper
   include WillPaginate::ViewHelpers
 
   # Return HTML with pagination controls for displaying an ActiveRecord +scope+.
-  def pagination_for(scope)
+  def pagination_for(scope, more_link=nil)
     if scope.respond_to?(:total_pages) && scope.total_pages > 1
       content_tag(:div, :class => 'actionbar') do
         [
-          will_paginate(scope),
-          tag(:div, :style => 'clear: both;')
+          more_link ? content_tag(:span, :class => 'pagination') { link_to('More &raquo;', more_link) } : will_paginate(scope),
+          tag(:br, :class=> 'clear')
         ]
       end
     end
@@ -113,6 +113,11 @@ module ApplicationHelper
 
   def icon(name)
     image_tag "icons/#{name}.png"
+  end
+
+  # Return status icon for the +node+.
+  def node_status_icon(node)
+    report_status_icon(node.last_report)
   end
 
   # Return status icon for the +report+.
@@ -125,4 +130,22 @@ module ApplicationHelper
     render 'reports/report_status_td', :report => report
   end
 
+  # Return 'sucess' or 'failure' CSS class name if the numeric +count+ is
+  # non-zero and this boolean +measures_failure+.
+  def counter_class(count, measures_failure)
+    (count > 0 && measures_failure) ? 'failure' : 'success'
+  end
+
+  ITEMS_PER_PAGE_DEFAULT = 50
+
+  # Return the number of items to put on a paginated page. Override the default
+  # value by setting the ITEMS_PER_PAGE environmental variable.
+  def items_per_page
+    ENV['ITEMS_PER_PAGE'].ergo.to_i || ITEMS_PER_PAGE_DEFAULT
+  end
+
+  # Return a paginated +scope+.
+  def paginate_scope(scope)
+    return scope.paginate(:page => params[:page], :per_page => items_per_page)
+  end
 end
