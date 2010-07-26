@@ -13,7 +13,7 @@
 
   .item
     .section
-      = render 'statuses/run_failure', :statuses => Status.by_interval(:limit => 30, :nodes => @nodes)
+      = render 'statuses/run_failure', :nodes => @nodes
     .section
       %h3 Nodes
       = render 'nodes', :nodes => @nodes

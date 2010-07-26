@@ -22,27 +22,31 @@ describe Node do
     before do
       Node.destroy_all
 
-      earlier = 1.week.ago.to_date
-      today = Date.today
+      later = 1.week.ago.to_date
+      sooner = Date.today
 
       @always_suceeding = Node.generate!(:name => 'always_suceeding').tap do |node|
-        Report.generate_for(node, earlier, true)
-        Report.generate_for(node, today, true)
+        Report.generate_for(node, later, true)
+        Report.generate_for(node, sooner, true)
+        node.reload
       end
 
       @currently_succeeding = Node.generate!(:name => 'currently_succeeding').tap do |node|
-        Report.generate_for(node, earlier, false)
-        Report.generate_for(node, today, true)
+        Report.generate_for(node, later, false)
+        Report.generate_for(node, sooner, true)
+        node.reload
       end
 
       @always_failing = Node.generate!(:name => 'always_failing').tap do |node|
-        Report.generate_for(node, earlier, false)
-        Report.generate_for(node, today, false)
+        Report.generate_for(node, later, false)
+        Report.generate_for(node, sooner, false)
+        node.reload
       end
 
       @currently_failing = Node.generate!(:name => 'currently_failing').tap do |node|
-        Report.generate_for(node, earlier, true)
-        Report.generate_for(node, today, false)
+        Report.generate_for(node, later, true)
+        Report.generate_for(node, sooner, false)
+        node.reload
       end
     end
 

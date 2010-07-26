@@ -8,7 +8,7 @@
         %h3 Node failures
         %p
           = pluralize @currently_failing_nodes.length, 'node'
-          are reporting failures:
+          are currently reporting failures:
           = succeed '.' do
             = truncated_node_sentence(@currently_failing_nodes, :more_link => nodes_path(:current => true, :successful => false))
 

@@ -12,7 +12,7 @@ class Node < ActiveRecord::Base
   has_many :node_groups, :through => :node_group_memberships
 
   has_many :reports, :dependent => :destroy
-  has_one :last_report, :class_name => 'Report', :order => 'time DESC'
+  belongs_to :last_report, :class_name => 'Report'
 
   named_scope :with_last_report, :include => :last_report
   named_scope :by_report_date, :order => 'reported_at DESC'
@@ -46,10 +46,7 @@ class Node < ActiveRecord::Base
   # * non-current and failing: Return any nodes that ever had a failing report.
   named_scope :by_currentness_and_successfulness, lambda {|currentness, successfulness|
     if currentness
-      {
-        :joins => 'inner join (select x.* from reports as x left join reports as y on (x.node_id = y.node_id and x.time < y.time) where y.id is null) as r',
-        :conditions => ['r.node_id = nodes.id and r.success = ?', successfulness],
-      }
+      { :conditions => ['nodes.success = ?', successfulness] }
     else
       {
         :conditions => ['reports.success = ?', successfulness],
@@ -79,11 +76,11 @@ class Node < ActiveRecord::Base
   end
 
   def self.count_unreported
-    unreported.count(:id)
+    unreported.count
   end
 
   def self.count_no_longer_reporting
-    no_longer_reporting.count(:id)
+    no_longer_reporting.count
   end
 
   def to_param
@@ -161,5 +158,9 @@ class Node < ActiveRecord::Base
   def assign_node_groups
     return true unless @node_group_names
     self.node_groups = (@node_group_names || []).reject(&:blank?).map{|name| NodeGroup.find_by_name(name)}
+  end
+
+  def find_last_report
+    return Report.find_last_for(self)
   end
 end
