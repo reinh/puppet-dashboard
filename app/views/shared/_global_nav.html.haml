@@ -18,3 +18,4 @@
   %li &bull;
   %li{:class => active_if(controller_name == "reports")}
     = link_to "Reports", reports_path
+  = render_hooks :global_nav
